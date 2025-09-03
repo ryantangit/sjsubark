@@ -1,31 +1,39 @@
 package extract
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
 	"golang.org/x/net/html"
 )
 
-const ParkingStatusURL = "https://sjsuparkingstatus.sjsu.edu/"
-// Parse through the html. The HTML of the Parking Status page is labelled with classes.
+type WebpageExtractor struct {
+	webpageUrl string
+}
+
+func NewWebpageExtractor() WebpageExtractor {
+	const ParkingStatusUrl = "https://sjsuparkingstatus.sjsu.edu/"
+	return WebpageExtractor{webpageUrl: ParkingStatusUrl}
+}
+
+// The parking record is generated from the official SJSU parking status page.
+// Parse through the HTML. The HTML of the Parking Status page is labelled with classes.
 // The relevant information are located within a div element with the class "garage"
 // Then it will be followed by an element with class "garage_name"
 // Then an element with class "garage_text" will have an element "garage__address" and "garage__fullness"
-func FetchParkingPage() {
 
-	//https://pkg.go.dev/time#Time.Format, this is how to format time, what a quirky langauge AHAHAHAHAHA
-	currentData := time.Now().Format("2006-01-02::15:04:05")  
-	resp, err := http.Get(ParkingStatusURL)
+func (e WebpageExtractor) FetchRecord() GarageRecord {
+	resp, err := http.Get(e.webpageUrl)
 	if err != nil {
 		log.Fatal("Fetching Request Page failed")
 	}
 	defer resp.Body.Close()
+	timestamp := time.Now()
 	rootNode, err := html.Parse(resp.Body)
 	if err != nil {
 		log.Fatal(err)
@@ -62,10 +70,17 @@ func FetchParkingPage() {
 		log.Fatal("The final results length do not match up.")
 	}
 
-	fmt.Print(currentData, "\n")
+	garages := []Garage{}
 	for idx := 0; idx < len(GarageAddr); idx++ {
-		fmt.Print(GarageName[idx], ", ", GarageFull[idx], "\n")
+		fullint, err := strconv.Atoi(GarageFull[idx])
+		if err != nil {
+			log.Fatalf("conversion of garage fullness from string to integer errored: %v", err)
+		}
+		garageStatus := Garage{name: GarageName[idx], fullness: fullint, addr: GarageAddr[idx]}
+		garages = append(garages, garageStatus)
 	}
+
+	return GarageRecord{timestamp: timestamp, garages: garages}
 }
 
 func findGarageDiv(doc *html.Node) *html.Node {
