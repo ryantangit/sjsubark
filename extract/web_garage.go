@@ -27,7 +27,7 @@ func NewWebpageExtractor() WebpageExtractor {
 // Then it will be followed by an element with class "garage_name"
 // Then an element with class "garage_text" will have an element "garage__address" and "garage__fullness"
 
-func (e WebpageExtractor) FetchRecord() GarageRecord {
+func (e WebpageExtractor) FetchRecords() []GarageRecord {
 	resp, err := http.Get(e.webpageUrl)
 	if err != nil {
 		log.Fatal("Fetching Request Page failed")
@@ -70,17 +70,17 @@ func (e WebpageExtractor) FetchRecord() GarageRecord {
 		log.Fatal("The final results length do not match up.")
 	}
 
-	garages := []Garage{}
+	garages := []GarageRecord{}
 	for idx := 0; idx < len(GarageAddr); idx++ {
 		fullint, err := strconv.Atoi(GarageFull[idx])
 		if err != nil {
 			log.Fatalf("conversion of garage fullness from string to integer errored: %v", err)
 		}
-		garageStatus := Garage{name: GarageName[idx], fullness: fullint, addr: GarageAddr[idx]}
+		garageStatus := GarageRecord{Name: GarageName[idx], Fullness: fullint, Addr: GarageAddr[idx], Timestamp: timestamp}
 		garages = append(garages, garageStatus)
 	}
 
-	return GarageRecord{timestamp: timestamp, garages: garages}
+	return garages
 }
 
 func findGarageDiv(doc *html.Node) *html.Node {

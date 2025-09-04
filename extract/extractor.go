@@ -6,16 +6,12 @@ import "time"
 // The timestamp will be extracted from the moment the record is generated.
 
 type GarageExtractor interface {
-	FetchRecord() GarageRecord
+	FetchRecords() (gr []GarageRecord)
 }
 
 type GarageRecord struct {
-	timestamp time.Time
-	garages   []Garage
-}
-
-type Garage struct {
-	name     string
-	fullness int
-	addr     string
+	Timestamp time.Time
+	Name      string
+	Fullness  int
+	Addr      string
 }

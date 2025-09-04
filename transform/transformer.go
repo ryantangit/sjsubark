@@ -1,58 +1,31 @@
 package transform
 
 import (
+	"time"
+
 	"github.com/ryantangit/sjsubark/extract"
 )
 
 // The transformer is mainly responsible for mining time information from the timestamps.
 
 type Transformer interface {
-	TransformRecord(extract.GarageRecord) CompleteGarageRecord
+	TransformRecord(gr extract.GarageRecord) (cgr CompleteGarageRecord)
 }
 
 type CompleteGarageRecord struct {
-	name      string
-	addr      string
-	fullness  int
-	second    int
-	minute    int
-	hour      int
-	month     Month
-	year      int
-	weekday   Weekday
-	isWeeknd  bool
-	isHoliday bool
-	semester  Semester
+	Name      string
+	Addr      string
+	Fullness  int
+	Second    int
+	Minute    int
+	Hour      int
+	Month     time.Month
+	Year      int
+	Weekday   time.Weekday
+	IsWeeknd  bool
+	IsHoliday bool
+	Semester  Semester
 }
-
-type Weekday int
-
-const (
-	Mon Weekday = iota + 1
-	Tue
-	Wed
-	Thu
-	Fri
-	Sat
-	Sun
-)
-
-type Month int
-
-const (
-	Jan Month = iota + 1
-	Feb
-	Mar
-	Apr
-	May
-	Jun
-	Jul
-	Aug
-	Sep
-	Oct
-	Nov
-	Dec
-)
 
 type Semester int
 
@@ -63,14 +36,78 @@ const (
 	SummerBreak
 )
 
-type TimestampTransformer interface {
-	ToSecond() int
-	ToMinute() int
-	ToHour() int
-	ToMonth() Month
-	ToYear() int
-	ToWeekday() Weekday
+type DefaultTransformer struct {
+}
+
+func (t DefaultTransformer) TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
+	record := CompleteGarageRecord{Name: gr.Name, Addr: gr.Addr, Fullness: gr.Fullness}
+	timeConverter := StdTimeConverter{time: gr.Timestamp}
+	record.Second = timeConverter.Second()
+	record.Minute = timeConverter.Minute()
+	record.Hour = timeConverter.Hour()
+	record.Month = timeConverter.Month()
+	record.Year = timeConverter.Year()
+	record.Weekday = timeConverter.Weekday()
+	record.IsWeeknd = timeConverter.IsWeekend()
+	record.IsHoliday = timeConverter.IsHoliday()
+	record.Semester = timeConverter.ToSemster()
+	return record
+}
+
+type TimeConverter interface {
+	Second() int
+	Minute() int
+	Hour() int
+	Month() time.Month
+	Year() int
+	Weekday() time.Weekday
 	IsWeekend() bool
-	isHoliday() bool
+	IsHoliday() bool
+	// SJSU Semester Breakdown:
+	// - First day of Fall Instruction will be on Wedsday of the second to last week in August
+	// - Last day of Fall Instruction will be on Friday of the Third week of Decemeber
+	// - First day of Spring Instruction will be on Thursday of the second to last week in January
+	// - Last day of Spring Instruction will be on Friday of the Third week of January
 	ToSemster() Semester
+}
+
+type StdTimeConverter struct {
+	time time.Time
+}
+
+func (t StdTimeConverter) Second() int {
+	return t.time.Second()
+}
+
+func (t StdTimeConverter) Minute() int {
+	return t.time.Minute()
+}
+
+func (t StdTimeConverter) Hour() int {
+	return t.time.Hour()
+}
+
+func (t StdTimeConverter) Month() time.Month {
+	return t.time.Month()
+}
+
+func (t StdTimeConverter) Year() int {
+	return t.time.Year()
+}
+
+func (t StdTimeConverter) Weekday() time.Weekday {
+	return t.time.Weekday()
+}
+
+func (t StdTimeConverter) IsWeekend() bool {
+	weekday := t.time.Weekday()
+	return (weekday == time.Friday || weekday == time.Saturday || weekday == time.Sunday)
+}
+
+func (t StdTimeConverter) IsHoliday() bool {
+	return false
+}
+
+func (t StdTimeConverter) ToSemster() Semester {
+	return Fall
 }

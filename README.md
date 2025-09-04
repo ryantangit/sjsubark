@@ -12,9 +12,7 @@
  _______________________________________________\
 
 
-Dog by Gemini + modifications from me 
-Rest by me
-
+By Me and Gemini   
 ```
 
 Builing pipeline to solve the burning question once and for all. 
