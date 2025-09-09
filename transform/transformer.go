@@ -1,13 +1,13 @@
 package transform
 
 import (
+	"log"
 	"time"
 
 	"github.com/ryantangit/sjsubark/extract"
 )
 
 // The transformer is mainly responsible for mining time information from the timestamps.
-
 type Transformer interface {
 	TransformRecord(gr extract.GarageRecord) (cgr CompleteGarageRecord)
 }
@@ -63,11 +63,6 @@ type TimeConverter interface {
 	Weekday() time.Weekday
 	IsWeekend() bool
 	IsHoliday() bool
-	// SJSU Semester Breakdown:
-	// - First day of Fall Instruction will be on Wedsday of the second to last week in August
-	// - Last day of Fall Instruction will be on Friday of the Third week of Decemeber
-	// - First day of Spring Instruction will be on Thursday of the second to last week in January
-	// - Last day of Spring Instruction will be on Friday of the Third week of January
 	ToSemster() Semester
 }
 
@@ -108,6 +103,30 @@ func (t StdTimeConverter) IsHoliday() bool {
 	return false
 }
 
+// Derive the academic school year
 func (t StdTimeConverter) ToSemster() Semester {
-	return Fall
+	year := t.Year()
+	month := t.Month()
+	timezone, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sc := SchoolCalendar{timezone: timezone}
+	if month >= 8 {
+		sc.StartYear = year
+		sc.EndYear = year + 1
+	} else {
+		sc.StartYear = year - 1
+		sc.EndYear = year
+	}
+	if t.time.Before(sc.StartofFall()) && t.time.After(sc.EndofFall()) {
+		return SummerBreak
+	} else if t.time.After(sc.StartofFall()) && t.time.Before(sc.EndofFall()) {
+		return Fall
+	} else if t.time.After(sc.EndofFall()) && t.time.Before(sc.StartofSpring()) {
+		return WinterBreak
+	} else if t.time.After(sc.StartofSpring()) && t.time.Before(sc.EndofSpring()) {
+		return Spring
+	}
+	return -1
 }
