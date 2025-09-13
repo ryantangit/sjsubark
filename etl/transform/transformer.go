@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ryantangit/sjsubark/extract"
+	"github.com/ryantangit/sjsubark/etl/extractor"
 )
 
 // The transformer is mainly responsible for mining time information from the timestamps.
@@ -103,7 +103,6 @@ func (t StdTimeConverter) IsHoliday() bool {
 	return false
 }
 
-// Derive the academic school year
 func (t StdTimeConverter) ToSemster() Semester {
 	year := t.Year()
 	month := t.Month()
