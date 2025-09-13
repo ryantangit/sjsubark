@@ -1,4 +1,4 @@
-package transform
+package sjsucalendar
 
 import (
 	"log"
@@ -54,4 +54,3 @@ func (sc SchoolCalendar) EndofSpring() time.Time {
 	}
 	return time.Date(sc.EndYear, time.May, day, 0, 0, 0, 0, sc.timezone)
 }
-
