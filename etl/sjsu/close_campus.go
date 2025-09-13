@@ -1,4 +1,4 @@
-package sjsucalendar
+package sjsu
 
 import (
 	"log"

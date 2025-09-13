@@ -4,7 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/ryantangit/sjsubark/etl/extractor"
+	"github.com/ryantangit/sjsubark/etl/extract"
+	"github.com/ryantangit/sjsubark/etl/sjsu"
 )
 
 // The transformer is mainly responsible for mining time information from the timestamps.
@@ -24,17 +25,10 @@ type CompleteGarageRecord struct {
 	Weekday   time.Weekday
 	IsWeeknd  bool
 	IsHoliday bool
-	Semester  Semester
+	Semester  sjsu.Semester
 }
 
-type Semester int
 
-const (
-	Fall Semester = iota
-	WinterBreak
-	Spring
-	SummerBreak
-)
 
 type DefaultTransformer struct {
 }
@@ -63,7 +57,7 @@ type TimeConverter interface {
 	Weekday() time.Weekday
 	IsWeekend() bool
 	IsHoliday() bool
-	ToSemster() Semester
+	ToSemster() sjsu.Semester
 }
 
 type StdTimeConverter struct {
@@ -103,29 +97,6 @@ func (t StdTimeConverter) IsHoliday() bool {
 	return false
 }
 
-func (t StdTimeConverter) ToSemster() Semester {
-	year := t.Year()
-	month := t.Month()
-	timezone, err := time.LoadLocation("America/Los_Angeles")
-	if err != nil {
-		log.Fatal(err)
-	}
-	sc := SchoolCalendar{timezone: timezone}
-	if month >= 8 {
-		sc.StartYear = year
-		sc.EndYear = year + 1
-	} else {
-		sc.StartYear = year - 1
-		sc.EndYear = year
-	}
-	if t.time.Before(sc.StartofFall()) && t.time.After(sc.EndofFall()) {
-		return SummerBreak
-	} else if t.time.After(sc.StartofFall()) && t.time.Before(sc.EndofFall()) {
-		return Fall
-	} else if t.time.After(sc.EndofFall()) && t.time.Before(sc.StartofSpring()) {
-		return WinterBreak
-	} else if t.time.After(sc.StartofSpring()) && t.time.Before(sc.EndofSpring()) {
-		return Spring
-	}
+func (t StdTimeConverter) ToSemster() sjsu.Semester {
 	return -1
 }
