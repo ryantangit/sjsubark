@@ -1,7 +1,6 @@
 package transform
 
 import (
-	"log"
 	"time"
 
 	"github.com/ryantangit/sjsubark/etl/extract"
@@ -14,21 +13,19 @@ type Transformer interface {
 }
 
 type CompleteGarageRecord struct {
-	Name      string
-	Addr      string
-	Fullness  int
-	Second    int
-	Minute    int
-	Hour      int
-	Month     time.Month
-	Year      int
-	Weekday   time.Weekday
-	IsWeeknd  bool
-	IsHoliday bool
-	Semester  sjsu.Semester
+	Name           string
+	Addr           string
+	Fullness       int
+	Second         int
+	Minute         int
+	Hour           int
+	Month          time.Month
+	Year           int
+	Weekday        time.Weekday
+	IsWeeknd       bool
+	IsCampusClosed bool
+	Semester       sjsu.Semester
 }
-
-
 
 type DefaultTransformer struct {
 }
@@ -43,7 +40,7 @@ func (t DefaultTransformer) TransformRecord(gr extract.GarageRecord) CompleteGar
 	record.Year = timeConverter.Year()
 	record.Weekday = timeConverter.Weekday()
 	record.IsWeeknd = timeConverter.IsWeekend()
-	record.IsHoliday = timeConverter.IsHoliday()
+	record.IsCampusClosed = timeConverter.IsCampusClosed()
 	record.Semester = timeConverter.ToSemster()
 	return record
 }
@@ -56,7 +53,7 @@ type TimeConverter interface {
 	Year() int
 	Weekday() time.Weekday
 	IsWeekend() bool
-	IsHoliday() bool
+	IsCampusClosed() bool
 	ToSemster() sjsu.Semester
 }
 
@@ -93,10 +90,10 @@ func (t StdTimeConverter) IsWeekend() bool {
 	return (weekday == time.Friday || weekday == time.Saturday || weekday == time.Sunday)
 }
 
-func (t StdTimeConverter) IsHoliday() bool {
-	return false
+func (t StdTimeConverter) IsCampusClosed() bool {
+	return sjsu.IsCampusClosed(t.time)
 }
 
 func (t StdTimeConverter) ToSemster() sjsu.Semester {
-	return -1
+	return sjsu.SchoolSemester(t.time)
 }

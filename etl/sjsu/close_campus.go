@@ -108,7 +108,7 @@ var YeartoCloseCampusMap = map[int][]CloseCampusInstance{
 }
 
 // If no information is found in regards to the time, the default answer will always be No.
-func isCampusClosed(timestamp time.Time) bool {
+func IsCampusClosed(timestamp time.Time) bool {
 	year := timestamp.Year()
 	instances, ok := YeartoCloseCampusMap[year]
 	if !ok {
