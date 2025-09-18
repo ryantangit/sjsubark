@@ -5,6 +5,9 @@ import (
 	"time"
 )
 
+// This file mainly keeps track of the semesters of school.
+// Primary focus is to determine what semester it is, given a timestamp.
+
 type Semester int
 
 const (
@@ -19,6 +22,8 @@ type SchoolYear struct {
 	EndYear   int
 }
 
+// One Full Academic School Year
+// I.E) Fall 2025 - Summer 2026
 type SchoolSemsterSchedule struct {
 	FallStart   time.Time
 	FallEnd     time.Time
@@ -30,6 +35,11 @@ type SchoolSemsterSchedule struct {
 	SummerEnd   time.Time
 }
 
+// Hardcoded Semester Schedule Begins here.
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+
+// Sourced from https://www.sjsu.edu/classes/calendar/2025-2026.php
 func fall2025fall2026() SchoolSemsterSchedule {
 	timezone, err := time.LoadLocation("America/Los_Angeles")
 	if err != nil {
@@ -47,11 +57,16 @@ func fall2025fall2026() SchoolSemsterSchedule {
 	}
 }
 
-var SchoolYearSchedule = map[SchoolYear]SchoolSemsterSchedule{
+// Hardcoded Semester Schedule Ends here.
+// -----------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------
+
+// Helper global variable that tracks school year to schedule.
+var schoolYearSchedule = map[SchoolYear]SchoolSemsterSchedule{
 	{StartYear: 2025, EndYear: 2026}: fall2025fall2026(),
 }
 
-func determineSchoolYear(timestamp time.Time) SchoolYear {
+func academicSchoolYear(timestamp time.Time) SchoolYear {
 	sy := SchoolYear{}
 	switch {
 	case (timestamp.After(fall2025fall2026().FallStart) && timestamp.Before(fall2025fall2026().SummerEnd)):
@@ -62,8 +77,8 @@ func determineSchoolYear(timestamp time.Time) SchoolYear {
 }
 
 func SchoolSemester(timestamp time.Time) Semester {
-	schoolYear := determineSchoolYear(timestamp)
-	schedule, ok := SchoolYearSchedule[schoolYear]
+	schoolYear := academicSchoolYear(timestamp)
+	schedule, ok := schoolYearSchedule[schoolYear]
 	var semester Semester
 	if !ok {
 		log.Printf("Schedule for this schoolyear is not found: Fall %d, Spring %d. Returning Fall by default", schoolYear.StartYear, schoolYear.EndYear)
