@@ -47,11 +47,37 @@ func fall2025fall2026() SchoolSemsterSchedule {
 }
 
 var SchoolYearSchedule = map[SchoolYear]SchoolSemsterSchedule{
-	SchoolYear{StartYear: 2025, EndYear: 2026} : fall2025fall2026(),
+	{StartYear: 2025, EndYear: 2026} : fall2025fall2026(),
 }
 
+func determineSchoolYear(timestamp time.Time) SchoolYear {
+	sy := SchoolYear{}
+	switch {
+	case (timestamp.After(fall2025fall2026().FallStart) && timestamp.Before(fall2025fall2026().SummerEnd)):
+		sy.StartYear = 2025
+		sy.EndYear = 2026
+	}
+	return sy
+}
 
-//TODO: Based off timestamp figure out what semester this is 
 func SchoolSemester(timestamp time.Time) Semester {
-	return -1 
+	schoolYear := determineSchoolYear(timestamp)
+	schedule, ok := SchoolYearSchedule[schoolYear]
+	var semester Semester
+	if !ok {
+		log.Printf("Schedule for this schoolyear is not found: Fall %d, Spring %d. Returning Fall by default", schoolYear.StartYear, schoolYear.EndYear)
+		return semester
+
+	}
+	switch {
+	case (timestamp.After(schedule.FallStart) && timestamp.Before(schedule.FallEnd)):
+		semester = Fall
+	case (timestamp.After(schedule.WinterStart) && timestamp.Before(schedule.WinterEnd)):
+		semester = WinterBreak
+	case (timestamp.After(schedule.SpringStart) && timestamp.Before(schedule.SpringEnd)):
+		semester = Spring
+	case (timestamp.After(schedule.SummerStart) && timestamp.Before(schedule.SummerEnd)):
+		semester = SummerBreak
+	}
+	return semester
 }
