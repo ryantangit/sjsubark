@@ -1,6 +1,7 @@
 package extract
 
 import (
+	"crypto/tls"
 	"log"
 	"net/http"
 	"os"
@@ -28,9 +29,14 @@ func NewWebpageExtractor() WebpageExtractor {
 // Then an element with class "garage_text" will have an element "garage__address" and "garage__fullness"
 
 func (e WebpageExtractor) FetchRecords() []GarageRecord {
+
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+		InsecureSkipVerify: true,
+	}
+
 	resp, err := http.Get(e.webpageUrl)
 	if err != nil {
-		log.Fatal("Fetching Request Page failed")
+		log.Fatal("Fetching Request Page failed", err)
 	}
 	defer resp.Body.Close()
 	timestamp := time.Now()

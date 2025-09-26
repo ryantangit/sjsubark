@@ -1,6 +1,7 @@
 package transform
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/ryantangit/sjsubark/etl/extract"
@@ -19,27 +20,30 @@ type CompleteGarageRecord struct {
 	Second         int
 	Minute         int
 	Hour           int
+	Day            int
 	Month          time.Month
 	Year           int
 	Weekday        time.Weekday
-	IsWeeknd       bool
+	IsWeekend      bool //Not the Singer
 	IsCampusClosed bool
 	Semester       sjsu.Semester
 }
 
-type DefaultTransformer struct {
+func (cgr CompleteGarageRecord) String() string {
+	return fmt.Sprintf(" Name: %s\n Fullness: %d\n Month: %d \n Day: %d\n Year: %d\n Weekday: %s\n IsWeekend: %t\n IsCampusClosed: %t\n", cgr.Name, cgr.Fullness, cgr.Month, cgr.Day, cgr.Year, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
 }
 
-func (t DefaultTransformer) TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
+func TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
 	record := CompleteGarageRecord{Name: gr.Name, Addr: gr.Addr, Fullness: gr.Fullness}
 	timeConverter := StdTimeConverter{time: gr.Timestamp}
 	record.Second = timeConverter.Second()
 	record.Minute = timeConverter.Minute()
 	record.Hour = timeConverter.Hour()
+	record.Day = timeConverter.Day()
 	record.Month = timeConverter.Month()
 	record.Year = timeConverter.Year()
 	record.Weekday = timeConverter.Weekday()
-	record.IsWeeknd = timeConverter.IsWeekend()
+	record.IsWeekend = timeConverter.IsWeekend()
 	record.IsCampusClosed = timeConverter.IsCampusClosed()
 	record.Semester = timeConverter.ToSemster()
 	return record
@@ -49,6 +53,7 @@ type TimeConverter interface {
 	Second() int
 	Minute() int
 	Hour() int
+	Day() int
 	Month() time.Month
 	Year() int
 	Weekday() time.Weekday
@@ -71,6 +76,10 @@ func (t StdTimeConverter) Minute() int {
 
 func (t StdTimeConverter) Hour() int {
 	return t.time.Hour()
+}
+
+func (t StdTimeConverter) Day() int {
+	return t.time.Day()
 }
 
 func (t StdTimeConverter) Month() time.Month {
