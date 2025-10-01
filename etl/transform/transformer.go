@@ -33,6 +33,10 @@ func (cgr CompleteGarageRecord) String() string {
 	return fmt.Sprintf(" Name: %s\n Fullness: %d\n Month: %d \n Day: %d\n Year: %d\n Weekday: %s\n IsWeekend: %t\n IsCampusClosed: %t\n", cgr.Name, cgr.Fullness, cgr.Month, cgr.Day, cgr.Year, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
 }
 
+func (cgr CompleteGarageRecord) CSVRecord() string {
+	return fmt.Sprintf("%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %t, %t, %d\n", cgr.Name, cgr.Addr, cgr.Fullness, cgr.Second, cgr.Minute, cgr.Hour, cgr.Day, cgr.Month, cgr.Year, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed, cgr.Semester)
+}
+
 func TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
 	record := CompleteGarageRecord{Name: gr.Name, Addr: gr.Addr, Fullness: gr.Fullness}
 	timeConverter := StdTimeConverter{time: gr.Timestamp}
