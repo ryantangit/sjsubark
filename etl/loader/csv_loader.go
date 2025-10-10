@@ -1,8 +1,8 @@
 package loader
 
 import (
-	"os"
 	"log"
+	"os"
 
 	"github.com/ryantangit/sjsubark/etl/transform"
 )
@@ -15,8 +15,8 @@ func NewCSVLoader(filepath string) CSVLoader {
 	return CSVLoader{Filepath: filepath}
 }
 
-func (csv CSVLoader) Upload (cgr transform.CompleteGarageRecord) {
-	f, err := os.OpenFile(csv.Filepath, os.O_APPEND | os.O_CREATE | os.O_WRONLY, 0644)
+func (csv CSVLoader) Upload(cgr transform.CompleteGarageRecord) {
+	f, err := os.OpenFile(csv.Filepath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

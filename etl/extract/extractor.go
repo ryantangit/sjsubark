@@ -13,5 +13,4 @@ type GarageRecord struct {
 	Timestamp time.Time
 	Name      string
 	Fullness  int
-	Addr      string
 }

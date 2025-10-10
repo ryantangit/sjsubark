@@ -1,25 +1,30 @@
 package extract
 
 import (
+	"bytes"
 	"crypto/tls"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/ryantangit/sjsubark/etl/config"
 	"golang.org/x/net/html"
 )
 
 type WebpageExtractor struct {
 	webpageUrl string
+	webpageDir string
 }
 
-func NewWebpageExtractor() WebpageExtractor {
-	const ParkingStatusUrl = "https://sjsuparkingstatus.sjsu.edu/"
-	return WebpageExtractor{webpageUrl: ParkingStatusUrl}
+func NewWebpageExtractor(webpageUrl string, webpageDir string) WebpageExtractor {
+	return WebpageExtractor{webpageUrl: webpageUrl, webpageDir: webpageDir}
 }
 
 // The parking record is generated from the official SJSU parking status page.
@@ -39,8 +44,20 @@ func (e WebpageExtractor) FetchRecords() []GarageRecord {
 		log.Fatal("Fetching Request Page failed", err)
 	}
 	defer resp.Body.Close()
+
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	timestamp := time.Now()
-	rootNode, err := html.Parse(resp.Body)
+	err = os.WriteFile(filepath.Join(config.WebpageDir(), webpageFilename(timestamp)), respBody, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	respReader := bytes.NewReader(respBody)
+	rootNode, err := html.Parse(respReader)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -51,18 +68,13 @@ func (e WebpageExtractor) FetchRecords() []GarageRecord {
 	}
 
 	GarageNameClassAttr := "garage__name"
-	GarageAddrClassAttr := "garage__address"
 	GarageFullClassAttr := "garage__fullness"
 	GarageName := []string{}
-	GarageAddr := []string{}
 	GarageFull := []string{}
 	for n := range garageDiv.Descendants() {
 		if n.Type == html.ElementNode && hasClass(n, GarageNameClassAttr) {
 			noWhiteSpace := strings.Join(strings.Fields(n.FirstChild.Data), "")
 			GarageName = append(GarageName, noWhiteSpace)
-		}
-		if n.Type == html.ElementNode && hasClass(n, GarageAddrClassAttr) {
-			GarageAddr = append(GarageAddr, n.FirstChild.Data)
 		}
 		if n.Type == html.ElementNode && hasClass(n, GarageFullClassAttr) {
 			noWhiteSpace := strings.Join(strings.Fields(n.FirstChild.Data), "")
@@ -72,17 +84,17 @@ func (e WebpageExtractor) FetchRecords() []GarageRecord {
 			GarageFull = append(GarageFull, noWhiteSpace[:len(noWhiteSpace)-1])
 		}
 	}
-	if !(len(GarageAddr) == len(GarageFull) && len(GarageFull) == len(GarageName)) {
+	if len(GarageFull) != len(GarageName) {
 		log.Fatal("The final results length do not match up.")
 	}
 
 	garages := []GarageRecord{}
-	for idx := 0; idx < len(GarageAddr); idx++ {
+	for idx := 0; idx < len(GarageFull); idx++ {
 		fullint, err := strconv.Atoi(GarageFull[idx])
 		if err != nil {
 			log.Fatalf("conversion of garage fullness from string to integer errored: %v", err)
 		}
-		garageStatus := GarageRecord{Name: GarageName[idx], Fullness: fullint, Addr: GarageAddr[idx], Timestamp: timestamp}
+		garageStatus := GarageRecord{Name: GarageName[idx], Fullness: fullint, Timestamp: timestamp}
 		garages = append(garages, garageStatus)
 	}
 
@@ -107,4 +119,11 @@ func hasClass(n *html.Node, targetClass string) bool {
 		}
 	}
 	return false
+}
+
+func webpageFilename(timestamp time.Time) string {
+	year, month, day := timestamp.Date()
+	hour := timestamp.Hour()
+	min := timestamp.Minute()
+	return fmt.Sprintf("%d_%d_%d__%d::%d_.html", month, day, year, hour, min)
 }

@@ -15,7 +15,6 @@ type Transformer interface {
 
 type CompleteGarageRecord struct {
 	Name           string
-	Addr           string
 	Fullness       int
 	Second         int
 	Minute         int
@@ -24,7 +23,7 @@ type CompleteGarageRecord struct {
 	Month          time.Month
 	Year           int
 	Weekday        time.Weekday
-	IsWeekend      bool //Not the Singer
+	IsWeekend      bool
 	IsCampusClosed bool
 	Semester       sjsu.Semester
 }
@@ -34,11 +33,11 @@ func (cgr CompleteGarageRecord) String() string {
 }
 
 func (cgr CompleteGarageRecord) CSVRecord() string {
-	return fmt.Sprintf("%s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %t, %t, %d\n", cgr.Name, cgr.Addr, cgr.Fullness, cgr.Second, cgr.Minute, cgr.Hour, cgr.Day, cgr.Month, cgr.Year, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed, cgr.Semester)
+	return fmt.Sprintf("%s, %d, %d, %d, %d, %d, %d, %d, %d, %t, %t, %d\n", cgr.Name, cgr.Fullness, cgr.Hour, cgr.Minute, cgr.Second, cgr.Year, cgr.Month, cgr.Day, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed, cgr.Semester)
 }
 
 func TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
-	record := CompleteGarageRecord{Name: gr.Name, Addr: gr.Addr, Fullness: gr.Fullness}
+	record := CompleteGarageRecord{Name: gr.Name, Fullness: gr.Fullness}
 	timeConverter := StdTimeConverter{time: gr.Timestamp}
 	record.Second = timeConverter.Second()
 	record.Minute = timeConverter.Minute()
