@@ -18,6 +18,12 @@ type CloseCampusInstance struct {
 	EndDay     int // The time it ends is at midnight
 }
 
+// TODO: Alrighty nerd, you're feeling the issue now.
+// This is why you don't put configurations like this into the compiled binary
+// And also why you shouldn't code this up when you were half assing it with no thought 
+// Formatting this should be pretty straight forward tho.
+// Everything should just be following the instance we have here.
+
 // Hard Coded Campus Close Dates Starts Here
 // -----------------------------------------------------------------------------------------
 // -----------------------------------------------------------------------------------------
