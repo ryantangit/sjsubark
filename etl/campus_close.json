@@ -1,0 +1,82 @@
+[
+  {
+    "year": 2025,
+    "instances": [
+      {
+        "reason": "Independence Day",
+        "startmonth": 7,
+        "startday": 4,
+        "endmonth": 7,
+        "endday": 4
+      },
+      {
+        "reason": "Labor Day",
+        "startmonth": 9,
+        "startday": 1,
+        "endmonth": 9,
+        "endday": 1
+      },
+      {
+        "reason": "Veteran's Day",
+        "startmonth": 11,
+        "startday": 11,
+        "endmonth": 11,
+        "endday": 11
+      },
+      {
+        "reason": "Thanksgiving",
+        "startmonth": 11,
+        "startday": 27,
+        "endmonth": 11,
+        "endday": 28
+      },
+      {
+        "reason": "Winter Break",
+        "startmonth": 12,
+        "startday": 25,
+        "endmonth": 12,
+        "endday": 31
+      }
+    ]
+  },
+  {
+    "year": 2026,
+    "instances": [
+      {
+        "reason": "New Year's Day",
+        "startmonth": 1,
+        "startday": 1,
+        "endmonth": 1,
+        "endday": 1
+      },
+      {
+        "reason": "Dr. Martin Luther King Jr's Day",
+        "startmonth": 1,
+        "startday": 19,
+        "endmonth": 1,
+        "endday": 19
+      },
+      {
+        "reason": "Cesar Chavez Day",
+        "startmonth": 3,
+        "startday": 31,
+        "endmonth": 3,
+        "endday": 31
+      },
+      {
+        "reason": "Memorial Day",
+        "startmonth": 5,
+        "startday": 25,
+        "endmonth": 5,
+        "endday": 26
+      },
+      {
+        "reason": "Juneteenth",
+        "startmonth": 6,
+        "startday": 19,
+        "endmonth": 6,
+        "endday": 20
+      }
+    ]
+  }
+]

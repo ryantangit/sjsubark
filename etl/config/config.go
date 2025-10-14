@@ -6,7 +6,15 @@ import (
 	"path/filepath"
 )
 
-func CSVLocation() string {
+func CampusClosePath() string {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return filepath.Join(home, ".sjsubarker", "etl", "campus_close.json")
+}
+
+func CSVPath() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatal(err)

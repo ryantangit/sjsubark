@@ -25,18 +25,17 @@ type CompleteGarageRecord struct {
 	Weekday        time.Weekday
 	IsWeekend      bool
 	IsCampusClosed bool
-	Semester       sjsu.Semester
 }
 
 func (cgr CompleteGarageRecord) String() string {
-	return fmt.Sprintf(" Name: %s\n Fullness: %d\n Month: %d \n Day: %d\n Year: %d\n Weekday: %s\n IsWeekend: %t\n IsCampusClosed: %t\n", cgr.Name, cgr.Fullness, cgr.Month, cgr.Day, cgr.Year, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
+	return fmt.Sprintf(" Name: %s\n Fullness: %d\n Month: %d \n Day: %d\n Year: %d\n Weekday: %s\n IsWeekend: %t\n", cgr.Name, cgr.Fullness, cgr.Month, cgr.Day, cgr.Year, cgr.Weekday, cgr.IsWeekend)
 }
 
 func (cgr CompleteGarageRecord) CSVRecord() string {
-	return fmt.Sprintf("%s, %d, %d, %d, %d, %d, %d, %d, %d, %t, %t, %d\n", cgr.Name, cgr.Fullness, cgr.Hour, cgr.Minute, cgr.Second, cgr.Year, cgr.Month, cgr.Day, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed, cgr.Semester)
+	return fmt.Sprintf("%s, %d, %d, %d, %d, %d, %d, %d, %d, %t, %t\n", cgr.Name, cgr.Fullness, cgr.Hour, cgr.Minute, cgr.Second, cgr.Year, cgr.Month, cgr.Day, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
 }
 
-func TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
+func TransformRecord(gr extract.GarageRecord, sjsu sjsu.SanJoseCampus) CompleteGarageRecord {
 	record := CompleteGarageRecord{Name: gr.Name, Fullness: gr.Fullness}
 	timeConverter := StdTimeConverter{time: gr.Timestamp}
 	record.Second = timeConverter.Second()
@@ -47,8 +46,7 @@ func TransformRecord(gr extract.GarageRecord) CompleteGarageRecord {
 	record.Year = timeConverter.Year()
 	record.Weekday = timeConverter.Weekday()
 	record.IsWeekend = timeConverter.IsWeekend()
-	record.IsCampusClosed = timeConverter.IsCampusClosed()
-	record.Semester = timeConverter.ToSemster()
+	record.IsCampusClosed = timeConverter.IsCampusClosed(sjsu)
 	return record
 }
 
@@ -62,7 +60,6 @@ type TimeConverter interface {
 	Weekday() time.Weekday
 	IsWeekend() bool
 	IsCampusClosed() bool
-	ToSemster() sjsu.Semester
 }
 
 type StdTimeConverter struct {
@@ -102,10 +99,6 @@ func (t StdTimeConverter) IsWeekend() bool {
 	return (weekday == time.Friday || weekday == time.Saturday || weekday == time.Sunday)
 }
 
-func (t StdTimeConverter) IsCampusClosed() bool {
+func (t StdTimeConverter) IsCampusClosed(sjsu sjsu.SanJoseCampus) bool {
 	return sjsu.IsCampusClosed(t.time)
-}
-
-func (t StdTimeConverter) ToSemster() sjsu.Semester {
-	return sjsu.SchoolSemester(t.time)
 }
