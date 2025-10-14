@@ -10,7 +10,7 @@ import (
 
 // This file keeps track of instances where school campus would be closed.
 // Note campus closed does not mean the same as winter breaks or summer breaks as the campus would still be opened during those times.
-// The information is extracted from SJSU's academic calendar
+// The information is extracted from SJSU's academic calendar into campus_close.json
 // Example link: https://www.sjsu.edu/provost/docs/2025-26%20Calendar%20revised%207-11-25.pdf
 
 type CloseCampusInstance struct {

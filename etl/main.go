@@ -9,9 +9,10 @@ import (
 )
 
 func main() {
+	//extract.LegacyCSVExtractor{Filepath: "../master.csv"}
+	Xtractor :=	extract.NewWebpageExtractor(config.WebpageUrl(), config.WebpageDir())
+	gr := Xtractor.FetchRecords()
 
-	webX := extract.NewWebpageExtractor(config.WebpageUrl(), config.WebpageDir())
-	gr := webX.FetchRecords()
 	sjsu := sjsu.SanJoseCampus{YeartoCloseCampusMap: make(map[int][]sjsu.CloseCampusInstance)}
 	sjsu.SanJoseCampusInit(config.CampusClosePath())
 	cgr := []transform.CompleteGarageRecord{}
@@ -22,4 +23,5 @@ func main() {
 	for _, r := range cgr {
 		csv.Upload(r)
 	}
-}
+
+	}
