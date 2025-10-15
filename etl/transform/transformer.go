@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/ryantangit/sjsubark/etl/config"
 	"github.com/ryantangit/sjsubark/etl/extract"
 	"github.com/ryantangit/sjsubark/etl/sjsu"
 )
@@ -69,38 +70,38 @@ type StdTimeConverter struct {
 }
 
 func (t StdTimeConverter) Second() int {
-	return t.time.Second()
+	return t.time.In(config.Timezone()).Second()
 }
 
 func (t StdTimeConverter) Minute() int {
-	return t.time.Minute()
+	return t.time.In(config.Timezone()).Minute()
 }
 
 func (t StdTimeConverter) Hour() int {
-	return t.time.Hour()
+	return t.time.In(config.Timezone()).Hour()
 }
 
 func (t StdTimeConverter) Day() int {
-	return t.time.Day()
+	return t.time.In(config.Timezone()).Day()
 }
 
 func (t StdTimeConverter) Month() time.Month {
-	return t.time.Month()
+	return t.time.In(config.Timezone()).Month()
 }
 
 func (t StdTimeConverter) Year() int {
-	return t.time.Year()
+	return t.time.In(config.Timezone()).Year()
 }
 
 func (t StdTimeConverter) Weekday() time.Weekday {
-	return t.time.Weekday()
+	return t.time.In(config.Timezone()).Weekday()
 }
 
 func (t StdTimeConverter) IsWeekend() bool {
-	weekday := t.time.Weekday()
+	weekday := t.time.In(config.Timezone()).Weekday()
 	return (weekday == time.Friday || weekday == time.Saturday || weekday == time.Sunday)
 }
 
 func (t StdTimeConverter) IsCampusClosed(sjsu sjsu.SanJoseCampus) bool {
-	return sjsu.IsCampusClosed(t.time)
+	return sjsu.IsCampusClosed(t.time.In(config.Timezone()))
 }

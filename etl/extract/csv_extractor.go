@@ -8,10 +8,11 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ryantangit/sjsubark/etl/config"
 )
 
-
-// This is a CSV Extractor that transforms a legacy record format to the current new one. 
+// This is a CSV Extractor that transforms a legacy record format to the current new one.
 // Serves no additional purpose beyond that
 
 type LegacyCSVExtractor struct {
@@ -37,11 +38,7 @@ func (ex LegacyCSVExtractor) FetchRecords() (gr []GarageRecord) {
 		}
 		timestamp := parts[2]
 		const layout = "2006-01-02::15:04:05"		
-		laLocation, err := time.LoadLocation("America/Los_Angeles")
-		if err != nil {
-			fmt.Println("Error loading location:", err)
-			return
-		}
+		laLocation := config.Timezone()
 		time, err := time.ParseInLocation(layout, timestamp, laLocation)
 		if err != nil {
 			panic(err)

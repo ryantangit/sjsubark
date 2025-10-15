@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 	"time"
+
+	"github.com/ryantangit/sjsubark/etl/config"
 )
 
 // This file keeps track of instances where school campus would be closed.
@@ -59,10 +61,7 @@ func (sjsu SanJoseCampus) IsCampusClosed(timestamp time.Time) bool {
 		log.Printf("Closed Campus Mapping for year %d was not found. Defaulting isCampusClosed inqury to false.", year)
 		return false
 	}
-	timezone, err := time.LoadLocation("America/Los_Angeles")
-	if err != nil {
-		log.Fatal(err)
-	}
+	timezone := config.Timezone()
 	for _, instance := range instances {
 		startTime := time.Date(year, instance.StartMonth, instance.StartDay, 0, 0, 0, 0, timezone)
 		endTime := time.Date(year, instance.EndMonth, instance.EndDay, 23, 59, 59, 0, timezone)
