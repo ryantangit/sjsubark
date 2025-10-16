@@ -99,7 +99,7 @@ func (t StdTimeConverter) Weekday() time.Weekday {
 
 func (t StdTimeConverter) IsWeekend() bool {
 	weekday := t.time.In(config.Timezone()).Weekday()
-	return (weekday == time.Friday || weekday == time.Saturday || weekday == time.Sunday)
+	return (weekday == time.Saturday || weekday == time.Sunday)
 }
 
 func (t StdTimeConverter) IsCampusClosed(sjsu sjsu.SanJoseCampus) bool {
