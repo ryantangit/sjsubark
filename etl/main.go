@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-	//extract.LegacyCSVExtractor{Filepath: "../master.csv"}
 	Xtractor :=	extract.NewWebpageExtractor(config.WebpageUrl(), config.WebpageDir())
 	gr := Xtractor.FetchRecords()
 

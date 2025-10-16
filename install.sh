@@ -33,3 +33,6 @@ then
 else
 	echo "$INSTALL_DIR/.sjsubarker/etl/master.csv already exists"
 fi
+
+# Compile the newest ETL scrape binary
+go build -o "$INSTALL_DIR/.sjsubarker/etl/run_etl" ./etl/main.go
