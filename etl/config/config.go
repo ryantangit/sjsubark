@@ -12,7 +12,7 @@ func CampusClosePath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return filepath.Join(home, ".sjsubarker", "etl", "campus_close.json")
+	return filepath.Join(home, ".sjsubark", "etl", "campus_close.json")
 }
 
 func CSVPath() string {
@@ -20,7 +20,7 @@ func CSVPath() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return filepath.Join(home, ".sjsubarker", "etl", "master.csv")
+	return filepath.Join(home, ".sjsubark", "etl", "master.csv")
 }
 
 // School time zone, really shouldn't change unless the tectonic plates are moving
@@ -39,7 +39,7 @@ func WebpageDir() string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return filepath.Join(home, ".sjsubarker", "etl", "webpages")
+	return filepath.Join(home, ".sjsubark", "etl", "webpages")
 }
 
 // This is where the web scrape will look for.
