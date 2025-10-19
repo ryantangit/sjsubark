@@ -1,5 +1,4 @@
 #!/bin/bash
-
 echo "SJSUBarker Installation Script"
 # Setting up project folder at home directory
 
@@ -35,4 +34,7 @@ else
 fi
 
 # Compile the newest ETL scrape binary
-go build -o "$INSTALL_DIR/.sjsubark/etl/run_etl" ./etl/main.go
+if go build -o "$INSTALL_DIR/.sjsubark/etl/run_etl" ./etl/main.go; then
+	echo "Compiled newest ETL scrape binary successfully"
+fi
+
