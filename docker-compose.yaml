@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_PASSWORD: ${SJSUBARK_PSQLPASSWORD} 
+      POSTGRES_USER: ${SJSUBARK_PSQLUSER} 
+      POSTGRES_DB: ${SJSUBARK_PSQLDB} 
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: 
