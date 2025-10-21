@@ -5,5 +5,5 @@ import (
 )
 
 type loader interface {
-	upload(cgr transform.CompleteGarageRecord)
+	Upload(cgr transform.CompleteGarageRecord)
 }

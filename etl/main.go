@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/ryantangit/sjsubark/etl/config"
 	"github.com/ryantangit/sjsubark/etl/extract"
 	"github.com/ryantangit/sjsubark/etl/loader"
@@ -23,4 +25,12 @@ func main() {
 		csv.Upload(r)
 	}
 
+	//Option to load into PostgresURL 
+	psql := loader.NewPostgresLoader(config.PostgresURL())	
+	if psql != nil {
+		defer psql.Close(context.Background())
+		for _, r := range cgr {
+			psql.Upload(r)
+		}
 	}
+}

@@ -12,8 +12,9 @@ import (
 	"github.com/ryantangit/sjsubark/etl/config"
 )
 
+// I have a thinkpad also running a previous version of this entire pipeline.
 // This is a CSV Extractor that transforms a legacy record format to the current new one.
-// Serves no additional purpose beyond that
+// Serves no additional purpose beyond this.
 
 type LegacyCSVExtractor struct {
 	Filepath string
