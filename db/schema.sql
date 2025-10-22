@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict grHROJtfCBGjPzFhUJ9mLQjqWx4nOauKG1crnroWEalscIsAmM7Sb46PqYnAKrK
+\restrict bhYa089KaOekmadS5XrMQ9HFR7nPOG24aobavyduRDxs08SRYwPbipFRcEx1vy1
 
 -- Dumped from database version 18.0
 -- Dumped by pg_dump version 18.0
@@ -52,7 +52,8 @@ CREATE TABLE public.garage_fullness (
     year integer NOT NULL,
     weekday integer NOT NULL,
     is_weekend boolean NOT NULL,
-    is_campus_closed boolean NOT NULL
+    is_campus_closed boolean NOT NULL,
+    fullness integer DEFAULT 0 NOT NULL
 );
 
 
@@ -136,5 +137,5 @@ ALTER TABLE ONLY public.garage
 -- PostgreSQL database dump complete
 --
 
-\unrestrict grHROJtfCBGjPzFhUJ9mLQjqWx4nOauKG1crnroWEalscIsAmM7Sb46PqYnAKrK
+\unrestrict bhYa089KaOekmadS5XrMQ9HFR7nPOG24aobavyduRDxs08SRYwPbipFRcEx1vy1
 

@@ -45,8 +45,9 @@ func (pg *PostgresLoader) Upload(cgr transform.CompleteGarageRecord) {
 		cgr.Weekday,
 		cgr.IsWeekend,
 		cgr.IsCampusClosed,
+		cgr.Fullness,
 	}
-	_, err = tx.Exec(context.Background(),`INSERT INTO garage_fullness (name, utc_timestamp, second, minute, hour, day, month, year, weekday, is_weekend, is_campus_closed) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11);`, args...)
+	_, err = tx.Exec(context.Background(),`INSERT INTO garage_fullness (name, utc_timestamp, second, minute, hour, day, month, year, weekday, is_weekend, is_campus_closed, fullness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`, args...)
 	if err != nil{
 		log.Fatal(err)
 	}
