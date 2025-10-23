@@ -31,7 +31,7 @@ func PostgresURL() string {
 	db := os.Getenv("SJSUBARK_PSQL_DB")
 	port := os.Getenv("SJSUBARK_PSQL_PORT")
 	host := os.Getenv("SJSUBARK_PSQL_HOST")
-	
+
 	//Ex) "postgresql://postgres:password@localhost:5432/db"
 	connStr := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", user, password, host, port, db)
 	return connStr
@@ -60,4 +60,3 @@ func WebpageUrl() string {
 	const ParkingStatusUrl = "https://sjsuparkingstatus.sjsu.edu/"
 	return ParkingStatusUrl
 }
-

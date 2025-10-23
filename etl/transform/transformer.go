@@ -17,7 +17,7 @@ type Transformer interface {
 type CompleteGarageRecord struct {
 	Name           string
 	Fullness       int
-	UTCTime		   time.Time
+	UTCTime        time.Time
 	Second         int
 	Minute         int
 	Hour           int

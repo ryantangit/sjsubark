@@ -38,7 +38,7 @@ func (ex LegacyCSVExtractor) FetchRecords() (gr []GarageRecord) {
 			panic(err)
 		}
 		timestamp := parts[2]
-		const layout = "2006-01-02::15:04:05"		
+		const layout = "2006-01-02::15:04:05"
 		laLocation := config.Timezone()
 		time, err := time.ParseInLocation(layout, timestamp, laLocation)
 		if err != nil {

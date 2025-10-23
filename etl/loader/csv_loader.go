@@ -1,10 +1,9 @@
 package loader
 
 import (
+	"fmt"
 	"log"
 	"os"
-	"fmt"
-
 
 	"github.com/ryantangit/sjsubark/etl/transform"
 )

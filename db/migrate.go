@@ -1,22 +1,21 @@
 package main
 
 import (
-	"log"
-	"context"
-	"os"
 	"bufio"
-	"strings"
+	"context"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/ryantangit/sjsubark/etl/config"
 	"github.com/ryantangit/sjsubark/etl/extract"
-	"github.com/ryantangit/sjsubark/etl/transform"
-	"github.com/ryantangit/sjsubark/etl/sjsu"
 	"github.com/ryantangit/sjsubark/etl/loader"
+	"github.com/ryantangit/sjsubark/etl/sjsu"
+	"github.com/ryantangit/sjsubark/etl/transform"
 )
-
 
 func main() {
 	f, err := os.Open(config.CSVPath())
@@ -38,7 +37,7 @@ func main() {
 			panic(err)
 		}
 		timestamp := parts[2]
-		const layout = "2006-01-02 15:04:05 -0700 MST"		
+		const layout = "2006-01-02 15:04:05 -0700 MST"
 		laLocation := config.Timezone()
 		time, err := time.ParseInLocation(layout, timestamp, laLocation)
 		if err != nil {
@@ -48,7 +47,7 @@ func main() {
 		fmt.Printf("%+v\n", record)
 		result = append(result, record)
 	}
-	
+
 	sjsu := sjsu.SanJoseCampus{YeartoCloseCampusMap: make(map[int][]sjsu.CloseCampusInstance)}
 	sjsu.SanJoseCampusInit(config.CampusClosePath())
 	cgr := []transform.CompleteGarageRecord{}
@@ -56,7 +55,7 @@ func main() {
 		cgr = append(cgr, transform.TransformRecord(r, sjsu))
 	}
 
-	psql := loader.NewPostgresLoader(config.PostgresURL())	
+	psql := loader.NewPostgresLoader(config.PostgresURL())
 	if psql != nil {
 		defer psql.Close(context.Background())
 		for _, r := range cgr {

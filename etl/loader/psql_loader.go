@@ -8,8 +8,7 @@ import (
 	"github.com/ryantangit/sjsubark/etl/transform"
 )
 
-
-type PostgresLoader struct{
+type PostgresLoader struct {
 	conn *pgx.Conn
 }
 
@@ -17,7 +16,7 @@ func NewPostgresLoader(postgresURL string) *PostgresLoader {
 	conn, err := pgx.Connect(context.Background(), postgresURL)
 	if err != nil {
 		log.Println(err)
-		return nil	
+		return nil
 	}
 	return &PostgresLoader{conn: conn}
 }
@@ -33,7 +32,7 @@ func (pg *PostgresLoader) Upload(cgr transform.CompleteGarageRecord) {
 	}
 	defer tx.Rollback(context.Background())
 
-	args := []any {
+	args := []any{
 		cgr.Name,
 		cgr.UTCTime,
 		cgr.Second,
@@ -47,8 +46,8 @@ func (pg *PostgresLoader) Upload(cgr transform.CompleteGarageRecord) {
 		cgr.IsCampusClosed,
 		cgr.Fullness,
 	}
-	_, err = tx.Exec(context.Background(),`INSERT INTO garage_fullness (name, utc_timestamp, second, minute, hour, day, month, year, weekday, is_weekend, is_campus_closed, fullness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`, args...)
-	if err != nil{
+	_, err = tx.Exec(context.Background(), `INSERT INTO garage_fullness (name, utc_timestamp, second, minute, hour, day, month, year, weekday, is_weekend, is_campus_closed, fullness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`, args...)
+	if err != nil {
 		log.Fatal(err)
 	}
 

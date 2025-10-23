@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	Xtractor :=	extract.NewWebpageExtractor(config.WebpageUrl(), config.WebpageDir())
+	Xtractor := extract.NewWebpageExtractor(config.WebpageUrl(), config.WebpageDir())
 	gr := Xtractor.FetchRecords()
 
 	sjsu := sjsu.SanJoseCampus{YeartoCloseCampusMap: make(map[int][]sjsu.CloseCampusInstance)}
@@ -25,8 +25,8 @@ func main() {
 		csv.Upload(r)
 	}
 
-	//Option to load into PostgresURL 
-	psql := loader.NewPostgresLoader(config.PostgresURL())	
+	//Option to load into PostgresURL
+	psql := loader.NewPostgresLoader(config.PostgresURL())
 	if psql != nil {
 		defer psql.Close(context.Background())
 		for _, r := range cgr {
