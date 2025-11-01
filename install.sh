@@ -8,7 +8,7 @@ if [ ! -d "$INSTALL_DIR/.sjsubark" ]; then
 	mkdir $INSTALL_DIR/.sjsubark/
 fi
 
-etl_dirs=($INSTALL_DIR/.sjsubark/etl/ $INSTALL_DIR/.sjsubark/etl/logs/ $INSTALL_DIR/.sjsubark/etl/webpages/)
+etl_dirs=($INSTALL_DIR/.sjsubark/etl/ $INSTALL_DIR/.sjsubark/etl/webpages/)
 for dir in "${etl_dirs[@]}"; do 
 	if [ ! -d $dir ]; 
 	then
