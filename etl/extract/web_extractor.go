@@ -35,21 +35,38 @@ func NewWebpageExtractor(webpageUrl string, webpageDir string) WebpageExtractor 
 
 func (e WebpageExtractor) FetchRecords() []GarageRecord {
 
+	// Ignore TLS
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
 		InsecureSkipVerify: true,
 	}
 
-	resp, err := http.Get(e.webpageUrl)
-	if err != nil {
-		log.Fatal("Fetching Request Page failed", err)
+	// Retry with Exponential Backoff if encounter unsucessful GET request
+	max_retries := 3
+	retry := 0
+	var resp *http.Response
+	var err error
+	for retry < max_retries {
+		resp, err = http.Get(e.webpageUrl)
+		if err != nil {
+			log.Fatal("Fetching Request Page failed", err)
+		}
+		if (resp.StatusCode == 200) {
+			break
+		}
+		backoff := 1<<retry
+		log.Printf("Backoff for %d seconds", backoff)
+		time.Sleep(time.Duration(backoff) * time.Second)
+		retry += 1
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		log.Fatal("Could not HTTP GET garage data with a 200 within retry window")
+	}
 
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	timestamp := time.Now()
 	err = os.WriteFile(filepath.Join(config.WebpageDir(), webpageFilename(timestamp)), respBody, 0644)
 	if err != nil {
