@@ -1,4 +1,4 @@
-package main
+package db
 
 import (
 	"bufio"
@@ -17,7 +17,8 @@ import (
 	"github.com/ryantangit/sjsubark/etl/transform"
 )
 
-func main() {
+// Copies everything from CSV into Postgres
+func migrateCSVtoPSQL() {
 	f, err := os.Open(config.CSVPath())
 	if err != nil {
 		log.Fatal(err)

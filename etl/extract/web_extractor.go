@@ -50,10 +50,10 @@ func (e WebpageExtractor) FetchRecords() []GarageRecord {
 		if err != nil {
 			log.Fatal("Fetching Request Page failed", err)
 		}
-		if (resp.StatusCode == 200) {
+		if resp.StatusCode == 200 {
 			break
 		}
-		backoff := 1<<retry
+		backoff := 1 << retry
 		log.Printf("Backoff for %d seconds", backoff)
 		time.Sleep(time.Duration(backoff) * time.Second)
 		retry += 1
