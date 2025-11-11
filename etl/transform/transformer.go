@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ryantangit/sjsubark/etl/config"
+	"github.com/ryantangit/sjsubark/config"
 	"github.com/ryantangit/sjsubark/etl/extract"
 	"github.com/ryantangit/sjsubark/etl/sjsu"
 )

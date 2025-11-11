@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ryantangit/sjsubark/etl/config"
+	"github.com/ryantangit/sjsubark/config"
 )
 
 // I have a thinkpad also running a previous version of this entire pipeline.

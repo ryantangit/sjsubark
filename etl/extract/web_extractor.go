@@ -14,7 +14,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ryantangit/sjsubark/etl/config"
+	"github.com/ryantangit/sjsubark/config"
 	"golang.org/x/net/html"
 )
 

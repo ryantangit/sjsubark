@@ -7,7 +7,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/ryantangit/sjsubark/etl/config"
+	"github.com/ryantangit/sjsubark/config"
 )
 
 // This file keeps track of instances where school campus would be closed.
