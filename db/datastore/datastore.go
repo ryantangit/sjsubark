@@ -18,9 +18,9 @@ func NewDataStore(dbpool *pgxpool.Pool) *DataStore{
 }
 
 type GarageStatus struct {
-	garage_name string
-	fullness int
-	utc_timestamp time.Time
+	Garage_name string
+	Fullness int
+	Utc_timestamp time.Time
 }
 
 func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +44,7 @@ func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
 	//Retrieve the utc_timestamp, name, fullness is sufficient
 	for rows.Next() {
 		var garageStatus GarageStatus
-		err := rows.Scan(&garageStatus.garage_name, &garageStatus.fullness, &garageStatus.utc_timestamp)
+		err := rows.Scan(&garageStatus.Garage_name, &garageStatus.Fullness, &garageStatus.Utc_timestamp)
 		if err != nil {
 			log.Println(err)
 		}
