@@ -27,10 +27,12 @@ func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()	
 	query := "SELECT name, fullness, utc_timestamp FROM garage_fullness ORDER BY utc_timestamp DESC LIMIT 4;"	
 	conn, err := ds.dbpool.Acquire(r.Context())
+	defer conn.Release()
 	if err != nil {
 		log.Println(err)
 	}
 	tx, err := conn.Begin(ctx)
+	defer tx.Rollback(ctx)
 	if err != nil {
 		log.Println(err)
 	}
@@ -39,7 +41,6 @@ func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	defer rows.Close()
-
 	statusList := []GarageStatus{}
 	//Retrieve the utc_timestamp, name, fullness is sufficient
 	for rows.Next() {
@@ -50,13 +51,12 @@ func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
 		}
 		statusList = append(statusList, garageStatus)
 	}
-	
+	tx.Commit(ctx)
 	jsonData, err := json.Marshal(statusList)
 	if err != nil {
 		log.Println(err)
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonData)
-	
 }
 
