@@ -24,6 +24,7 @@ type GarageStatus struct {
 }
 
 func (ds *DataStore) GetLatestStatus(w http.ResponseWriter, r *http.Request) {
+	log.Println("/latest requested")
 	ctx := r.Context()	
 	query := "SELECT name, fullness, utc_timestamp FROM garage_fullness ORDER BY utc_timestamp DESC LIMIT 4;"	
 	conn, err := ds.dbpool.Acquire(r.Context())
