@@ -1,3 +1,5 @@
+#Docker compose file for PSQL DB
+
 services:
   db:
     image: postgres:18-alpine
