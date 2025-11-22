@@ -1,25 +1,27 @@
-import Garage from "@/components/Garage";
-import { Accordion, Heading} from "@chakra-ui/react";
+import { Accordion, Flex, Heading} from "@chakra-ui/react";
 import { fetchLatestStatus } from "@/lib/datastore"
-
+import GarageTitle from "@/components/Garage";
 
 export default async function Home() {	
 	const data = await fetchLatestStatus();
+
 	return (
-		<Accordion.Root width={"320px"} marginX={"auto"} marginY={"auto"}>
+		<Flex alignContent={"center"} justifyContent={"center"} height={"500px"}>
+		<Accordion.Root collapsible width={"750px"} marginX={"auto"} marginY={"auto"}>
 			{
 				data.map((d)=> (
 					<Accordion.Item key={d.Garage_name} value={d.Garage_name} >
 					<Accordion.ItemTrigger>
-						<Heading flex="1"> {d.Garage_name} </Heading>
+						<GarageTitle name={d.Garage_name} fullness={d.Fullness} />
 						<Accordion.ItemIndicator/>
 					</Accordion.ItemTrigger>
 					<Accordion.ItemContent>
-						<Garage name={d.Garage_name} fullness={d.Fullness} />
 					</Accordion.ItemContent>
 					</Accordion.Item>
 				))	
 			}
 		</Accordion.Root>
+		</Flex>
 	);
+
 }
