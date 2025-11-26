@@ -17,7 +17,7 @@ func NewCSVLoader(filepath string) CSVLoader {
 }
 
 func CSVRecord(cgr transform.CompleteGarageRecord) string {
-	return fmt.Sprintf("%s, %d, %s, %d, %d, %d, %d, %d, %d, %d, %t, %t\n", cgr.Name, cgr.Fullness, cgr.UTCTime.String(), cgr.Hour, cgr.Minute, cgr.Second, cgr.Year, cgr.Month, cgr.Day, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
+	return fmt.Sprintf("%s,%d,%s,%d,%d,%d,%d,%d,%d,%d,%t,%t\n", cgr.Name, cgr.Fullness, cgr.UTCTime.String(), cgr.Hour, cgr.Minute, cgr.Second, cgr.Year, cgr.Month, cgr.Day, cgr.Weekday, cgr.IsWeekend, cgr.IsCampusClosed)
 }
 
 func (csv CSVLoader) Upload(cgr transform.CompleteGarageRecord) {
