@@ -16,3 +16,6 @@ class TrainedModel:
     
     def unload_model(self):
         self.model = None
+
+    def predict(self, garage: str):
+        pass
