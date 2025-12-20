@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from sqlalchemy import String, create_engine, URL, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from datetime import datetime
@@ -40,8 +41,14 @@ class GarageRecord(Base):
 class SQLAccessor:
     def __init__(self):
         self.engine = create_engine(url_object)
-    def most_recent_garage(self):
-        stmt = select(GarageRecord).order_by(GarageRecord.utc_timestamp.desc()).limit(4)
+        self.NUM_OF_GARAGES = 4 #This most likely won't change while I'm here LoL - 12/17/26
+
+    def most_recent_garages(self):
+        stmt = select(GarageRecord).order_by(GarageRecord.utc_timestamp.desc()).limit(self.NUM_OF_GARAGES)
         with Session(self.engine) as sess:
             return sess.execute(stmt).scalars().all()
 
+    def most_recent_record(self, garage: str):
+        stmt = select(GarageRecord).where(GarageRecord.name == garage).order_by(GarageRecord.utc_timestamp.desc()).limit(1)
+        with self.engine.connect() as conn:
+            return pd.read_sql(stmt, conn)
