@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from core.trainedmodel import TrainedModel
@@ -30,8 +30,8 @@ class Prediction(BaseModel):
 def predict(garage: str, increment: int = 0) -> Prediction:
     # Retrieve the most recent record
     record = database.most_recent_record(garage)
-    if not len(record) == 0:
-        #Exception - Server Error
-        pass
-    return Prediction(name=garage, forecast=ml_model.predict(record))
+    if len(record) == 0:
+        raise HTTPException(status_code=404, detail="garage not found")
+    return Prediction(name=garage, 
+                      forecast=ml_model.predict_increment(record, increment))
 

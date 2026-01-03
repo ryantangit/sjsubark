@@ -30,3 +30,14 @@ class TrainedModel:
         record = drop_unnecessary_cols(record)
         forecast = self.pipeline.predict(record)[0]
         return round(forecast)
+
+    #increments are in measured in steps of 10 minutes
+    def predict_increment(self, record, increment: int):
+        #TODO: this is a wrong prediction, requires refactoring of how time is stored, just need to see iteration
+        for _ in range(increment - 1):  
+            next_fullness = self.predict(record)
+            record.iloc[0, record.columns.get_loc('fullness')] = next_fullness
+        return self.predict(record)
+
+
+                        
