@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS calendar (
-	calendar_date DATE,
+	calendar_date DATE PRIMARY KEY,
 	is_holiday BOOLEAN,
 	is_weekend BOOLEAN);
 
