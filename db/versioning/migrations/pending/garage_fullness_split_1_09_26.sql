@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS calendar (
-	calendar_date date,
-	is_holiday boolean,
-	is_weekend boolean,
+	calendar_date DATE,
+	is_holiday BOOLEAN,
+	is_weekend BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS garage_info (
