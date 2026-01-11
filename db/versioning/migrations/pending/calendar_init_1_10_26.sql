@@ -1,4 +1,4 @@
-INSERT INTO calendar (calendar_date, is_holiday, is_weekend)
+INSERT INTO calendar (calendar_date, is_campus_closed, is_weekend)
 SELECT 
     datum AS calendar_date,
     FALSE AS is_campus_closed, --default to false for now
