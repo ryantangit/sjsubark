@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS calendar (
 	calendar_date DATE PRIMARY KEY,
-	is_holiday BOOLEAN,
+	is_campus_closed BOOLEAN,
 	is_weekend BOOLEAN);
 
 CREATE TABLE IF NOT EXISTS garage_info (
