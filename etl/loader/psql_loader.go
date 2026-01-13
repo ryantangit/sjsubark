@@ -41,7 +41,7 @@ func (pg *PostgresLoader) Upload(cgr transform.CompleteGarageRecord) {
 	INSERT INTO garage_fullness (utc_timestamp, fullness, garage_id)
 	SELECT $2, $3, gi.garage_id 
 	FROM garage_info gi 
-	WHERE gi.garage_name = $1)
+	WHERE gi.garage_name = $1;
 	`
 	_, err = tx.Exec(context.Background(), query, args...)
 	
