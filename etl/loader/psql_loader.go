@@ -35,22 +35,17 @@ func (pg *PostgresLoader) Upload(cgr transform.CompleteGarageRecord) {
 	args := []any{
 		cgr.Name,
 		cgr.UTCTime,
-		cgr.Second,
-		cgr.Minute,
-		cgr.Hour,
-		cgr.Day,
-		cgr.Month,
-		cgr.Year,
-		cgr.Weekday,
-		cgr.IsWeekend,
-		cgr.IsCampusClosed,
 		cgr.Fullness,
 	}
-	_, err = tx.Exec(context.Background(), `INSERT INTO garage_fullness (name, utc_timestamp, second, minute, hour, day, month, year, weekday, is_weekend, is_campus_closed, fullness) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12);`, args...)
+	query := `
+	INSERT INTO garage_fullness (utc_timestamp, fullness, garage_id)
+	VALUES ($2, $3, SELECT garage_id FROM garage_info gi WHERE gi.garage_name = $4)
+	`
+	_, err = tx.Exec(context.Background(), query, args...)
+	
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	err = tx.Commit(context.Background())
 	if err != nil {
 		log.Fatal(err)
