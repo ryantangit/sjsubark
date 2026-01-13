@@ -1,3 +1,4 @@
 ALTER TABLE garage_fullness
 	DROP COLUMN name IF EXISTS;
+	ALTER COLUMN garage_id SET NOT NULL;
 
