@@ -22,6 +22,11 @@ def health_check():
             "model_loaded": ml_model.pipeline != None
             }
 
+@app.get("/recent")
+def recent():
+    recent_records = database.most_recent_garage_records()
+    return recent_records
+
 class Prediction(BaseModel):
     name: str
     forecast: int
