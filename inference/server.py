@@ -2,10 +2,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
 from core.trainedmodel import TrainedModel
-from core.sql import SQLAccessor 
+from core.sql import SQLAccessor
 
 ml_model = TrainedModel("./gradient_boost_pipeline.joblib")
 database = SQLAccessor()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,23 +14,25 @@ async def lifespan(app: FastAPI):
     yield
     ml_model.unload_model()
 
+
 app = FastAPI(lifespan=lifespan)
+
 
 @app.get("/health")
 def health_check():
-    return {
-            "status": "ok", 
-            "model_loaded": ml_model.pipeline != None
-            }
+    return {"status": "ok", "model_loaded": ml_model.pipeline != None}
+
 
 @app.get("/recent")
 def recent():
     recent_records = database.most_recent_garage_records()
     return recent_records
 
+
 class Prediction(BaseModel):
     name: str
     forecast: int
+
 
 @app.get("/predict")
 def predict(garage: str, increment: int = 0) -> Prediction:
@@ -37,6 +40,6 @@ def predict(garage: str, increment: int = 0) -> Prediction:
     record = database.most_recent_record(garage)
     if len(record) == 0:
         raise HTTPException(status_code=404, detail="garage not found")
-    return Prediction(name=garage, 
-                      forecast=ml_model.predict_increment(record, increment))
-
+    return Prediction(
+        name=garage, forecast=ml_model.predict_increment(record, increment)
+    )
