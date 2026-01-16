@@ -49,7 +49,6 @@ class GarageInfo(Base):
     def __repr__(self) -> str:
         return f"id={self.garage_id}, name={self.garage_name}, address={self.address}"
 
-
 class SQLAccessor:
     def __init__(self):
         self.engine = create_engine(url_object)
@@ -77,10 +76,23 @@ class SQLAccessor:
                 )
             return garages
 
-    # Select * from garage_fullness where
-    """
-    def most_recent_record(self, garage: str):
-        stmt = select(GarageFullness).where(GarageFullness.name == garage).order_by(GarageFullness.utc_timestamp.desc()).limit(1)
-        with self.engine.connect() as conn:
-            return pd.read_sql(stmt, conn)
-    """
+    def most_recent_record(self, garage_id: int) -> Garage | None:
+        stmt = (
+            select(
+                GarageInfo.garage_name,
+                GarageFullness.utc_timestamp,
+                GarageFullness.fullness,
+            )
+            .join(GarageInfo)
+            .where(GarageInfo.garage_id == garage_id)
+            .order_by(GarageFullness.utc_timestamp.desc())
+            .limit(1)
+            )
+
+        with Session(self.engine) as sess:
+            result = sess.execute(stmt).first()
+            print(result)
+            if result is None:
+                return None
+            return Garage(name=result.garage_name, utc_timestamp=result.utc_timestamp, fullness=result.fullness)
+

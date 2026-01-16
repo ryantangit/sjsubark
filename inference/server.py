@@ -33,13 +33,9 @@ class Prediction(BaseModel):
     name: str
     forecast: int
 
-
+'''
 @app.get("/predict")
-def predict(garage: str, increment: int = 0) -> Prediction:
+def predict(garage_id: int, increment: int = 0) -> None:
     # Retrieve the most recent record
-    record = database.most_recent_record(garage)
-    if len(record) == 0:
-        raise HTTPException(status_code=404, detail="garage not found")
-    return Prediction(
-        name=garage, forecast=ml_model.predict_increment(record, increment)
-    )
+    record = database.most_recent_record(garage_id)
+'''
