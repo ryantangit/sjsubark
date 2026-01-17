@@ -91,7 +91,6 @@ class SQLAccessor:
 
         with Session(self.engine) as sess:
             result = sess.execute(stmt).first()
-            print(result)
             if result is None:
                 return None
             return Garage(name=result.garage_name, utc_timestamp=result.utc_timestamp, fullness=result.fullness)
