@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      SJSUBARK_PSQL_PASSWORD: ${SJSUBARK_PSQL_PASSWORD} 
+      SJSUBARK_PSQL_USER: ${SJSUBARK_PSQL_USER} 
+      SJSUBARK_PSQL_DB: ${SJSUBARK_PSQL_DB} 
+
