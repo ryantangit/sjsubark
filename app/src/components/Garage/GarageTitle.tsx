@@ -1,6 +1,6 @@
 "use client"
-import { Heading, HStack, Tag } from "@chakra-ui/react";
-import FullnessTag from "./GarageFullness";
+import { Heading, HStack } from "@chakra-ui/react";
+import FullnessTag from "./FullnessTag";
 
 interface GarageProps {
 	name: string;
