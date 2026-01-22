@@ -4,7 +4,7 @@ import { Garage, Prediction } from "./types";
 
 export async function fetchRecentGarage(): Promise<Garage[]> {
 	try {
-		const response = await fetch(`${BACKEND_URL}/recent`);
+		const response = await fetch(`${BACKEND_URL}/recent`, {next: {revalidate: 60}});
 		if (!response.ok) {
 			throw new Error("Fetch Latest Garage Status failed.");
 		}
@@ -18,10 +18,10 @@ export async function fetchRecentGarage(): Promise<Garage[]> {
 
 export async function fetchGaragePrediction(garage_id: number, increments: number): Promise<Prediction | null> {
 	try {
-		const url = new URL(`${BACKEND_URL}/predict`)
+		const url = new URL(`${BACKEND_URL}/predict`);
 		url.searchParams.set("garage_id", garage_id.toString());
 		url.searchParams.set("increment", increments.toString());
-		const response = await fetch(`${url.toString()}`);
+		const response = await fetch(`${url.toString()}`, {next: {revalidate: 60}});
 		const json = await response.json();
 		return {name: json.name, forecast: json.forecast, increments: increments};
 	} catch (error) {

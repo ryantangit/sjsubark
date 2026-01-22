@@ -7,6 +7,9 @@ import { Garage } from "@/lib/types";
 
 export default async function Home() {	
 	const data = await fetchRecentGarage();
+	if (!data || data.length === 0) {
+		return <div> Loading </div>
+	}
 	const timestamp = new Date(data[0].utc_timestamp+"Z").toLocaleString("en-US", {
   		timeZone: "America/Los_Angeles"
 	});
