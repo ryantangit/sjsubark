@@ -4,6 +4,7 @@ import GarageTitle from "@/components/Garage/GarageTitle";
 import Title from "@/components/Title/PageTitle";
 import GaragePredictions from "@/components/Garage/GaragePrediction";
 import { Garage } from "@/lib/types";
+import AsciiArt from "@/components/Title/Ascii";
 
 export default async function Home() {	
 	const data = await fetchRecentGarage();
@@ -16,10 +17,11 @@ export default async function Home() {
 	return (
 		<Flex alignContent={"center"} justifyContent={"center"} minHeight={"500px"} paddingTop={40}>
 		<Stack>
-		<Title marginX={"auto"} marginY={"auto"}>	
+		<Title marginX={"auto"} marginY={"auto"} size={"7xl"}>	
 			SJSU Bark
 		</Title>
-		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} width={"750px"} marginX={"auto"} marginY={"auto"} padding={5}>
+		<AsciiArt />
+		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} width={"750px"} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
 			<Badge> Updated: {timestamp.toString()} </Badge>
 			{
 				data.map((d)=> (
