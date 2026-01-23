@@ -1,4 +1,4 @@
-import { Accordion, Flex, Badge, Stack} from "@chakra-ui/react";
+import { Accordion, Box, Flex, Badge, Stack} from "@chakra-ui/react";
 import { fetchGaragePrediction, fetchRecentGarage } from "@/lib/inference"
 import GarageTitle from "@/components/Garage/GarageTitle";
 import Title from "@/components/Title/PageTitle";
@@ -15,13 +15,13 @@ export default async function Home() {
   		timeZone: "America/Los_Angeles"
 	});
 	return (
-		<Flex alignContent={"center"} justifyContent={"center"} minHeight={"500px"} paddingTop={40}>
-		<Stack>
+		<Box width={{base: "100%", md: "750px", lg: "1000px"}} mx="auto" marginTop={"10px"}>
+		<Stack alignContent={"center"} justifyContent={"center"} minHeight={"500px"}>
 		<Title marginX={"auto"} marginY={"auto"} size={"7xl"}>	
 			SJSU Bark
 		</Title>
 		<AsciiArt />
-		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} width={"750px"} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
+		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
 			<Badge> Updated: {timestamp.toString()} </Badge>
 			{
 				data.map((d)=> (
@@ -38,7 +38,7 @@ export default async function Home() {
 			}
 		</Accordion.Root>
 		</Stack>
-		</Flex>
+		</Box>
 	);
 
 }
