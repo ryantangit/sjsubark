@@ -27,7 +27,7 @@ export async function fetchGaragePrediction(
     url.searchParams.set("garage_id", garage_id.toString());
     url.searchParams.set("increment", increments.toString());
     const response = await fetch(`${url.toString()}`, {
-      next: { revalidate: 0 },
+      next: { revalidate: 30 },
     });
     const json = await response.json();
     return { name: json.name, forecast: json.forecast, increments: increments };

@@ -44,13 +44,11 @@ export default async function Home() {
 }
 
 function fetchFuturePredictions(garage: Garage) {
-	let results = [];
-	//1 hr
-	results.push(fetchGaragePrediction(garage.garage_id, (1) * 6));
-	//3 hrs
-	results.push(fetchGaragePrediction(garage.garage_id, (3) * 6));
-	//6 hrs
-	results.push(fetchGaragePrediction(garage.garage_id, (6) * 6));
+	let results = [
+		fetchGaragePrediction(garage.garage_id, (1) * 6),
+		fetchGaragePrediction(garage.garage_id, (3) * 6),
+		fetchGaragePrediction(garage.garage_id, (6) * 6),
+	];
 	return results
 }
 
