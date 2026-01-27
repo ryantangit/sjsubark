@@ -1,5 +1,5 @@
 services:
-  app:
+  sjsubark:
     build: .
     ports:
       - "3000:3000"
