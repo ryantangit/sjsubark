@@ -4,7 +4,7 @@ import { Provider } from "@/components/ui/provider";
 
 export const metadata: Metadata = {
   title: "SJSU Barker",
-  description: "San Jose State Parking Inference",
+  description: "San Jose State Garage Occupancy Inference",
 };
 
 export default function RootLayout({

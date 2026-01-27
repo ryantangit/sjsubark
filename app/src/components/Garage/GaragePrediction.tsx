@@ -1,7 +1,7 @@
 "use client"
 import { use } from "react"
 import { Prediction } from "@/lib/types"
-import { DataList, HStack } from "@chakra-ui/react"
+import { Box, DataList, HStack, Text } from "@chakra-ui/react"
 import FullnessTag from "./FullnessTag"
 
 interface GaragePredictionsProps {
@@ -14,6 +14,8 @@ interface GaragePredictionProps {
 
 export default function GaragePredictions(props: GaragePredictionsProps) {
 	return (
+		<Box>
+		<Text opacity={0.7}> Prediction </Text>
 		<HStack>
 		{
 			props.predictions.map((prediction, index)=> (
@@ -21,6 +23,7 @@ export default function GaragePredictions(props: GaragePredictionsProps) {
 			))	
 		}
 		</HStack>
+		</Box>
 	)
 }
 
@@ -30,7 +33,7 @@ function GaragePrediction(props: GaragePredictionProps){
 	return (
 		<DataList.Root>
 		<DataList.Item >
-		  <DataList.ItemLabel>{incrementToHourString(prediction.increments)}</DataList.ItemLabel>
+		  <DataList.ItemLabel opacity={0.6}>{incrementToHourString(prediction.increments)}</DataList.ItemLabel>
 		  <DataList.ItemValue><FullnessTag fullness={prediction.forecast}></FullnessTag></DataList.ItemValue>
 		</DataList.Item>
 		</DataList.Root>

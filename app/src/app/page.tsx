@@ -1,4 +1,4 @@
-import { Accordion, Box, Flex, Badge, Stack} from "@chakra-ui/react";
+import { Accordion, Box, Badge, Heading,Stack} from "@chakra-ui/react";
 import { fetchGaragePrediction, fetchRecentGarage } from "@/lib/inference"
 import GarageTitle from "@/components/Garage/GarageTitle";
 import Title from "@/components/Title/PageTitle";
@@ -17,10 +17,15 @@ export default async function Home() {
 	return (
 		<Box width={{base: "100%", md: "750px", lg: "1000px"}} mx="auto" marginTop={"10px"}>
 		<Stack alignContent={"center"} justifyContent={"center"} minHeight={"500px"}>
-		<Title marginX={"auto"} marginY={"auto"} size={"7xl"}>	
+		<Title margin={"auto"} size={"7xl"}>	
 			SJSU Bark
 		</Title>
+		<Heading margin={"auto"} size={"md"} opacity={0.7}>
+			San Jose State Garage Occupancy Inference
+		</Heading>
+		<Box margin={"auto"}>
 		<AsciiArt />
+		</Box>
 		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
 			<Badge> Updated: {timestamp.toString()} </Badge>
 			{
@@ -43,6 +48,8 @@ export default async function Home() {
 
 }
 
+
+// Fetches next hour, 3 hours and 6 hours as a promise to be resolved by React's use hook
 function fetchFuturePredictions(garage: Garage) {
 	let results = [
 		fetchGaragePrediction(garage.garage_id, (1) * 6),
