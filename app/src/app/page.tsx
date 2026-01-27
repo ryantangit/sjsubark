@@ -1,10 +1,11 @@
-import { Accordion, Box, Badge, Heading,Stack} from "@chakra-ui/react";
+import { Accordion, Box, Text, Heading,Stack, HStack} from "@chakra-ui/react";
 import { fetchGaragePrediction, fetchRecentGarage } from "@/lib/inference"
 import GarageTitle from "@/components/Garage/GarageTitle";
 import Title from "@/components/Title/PageTitle";
 import GaragePredictions from "@/components/Garage/GaragePrediction";
 import { Garage } from "@/lib/types";
 import AsciiArt from "@/components/Title/Ascii";
+import RefeshButton from "@/components/ui/refresh";
 
 export default async function Home() {	
 	const data = await fetchRecentGarage();
@@ -27,7 +28,10 @@ export default async function Home() {
 		<AsciiArt />
 		</Box>
 		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
-			<Badge> Updated: {timestamp.toString()} </Badge>
+			<HStack justifyContent={"space-between"} margin={"auto"}>
+			<Text fontSize={"sm"} alignItems={"left"}> Updated: {timestamp.toString()} </Text>
+			<RefeshButton />
+			</HStack>
 			{
 				data.map((d)=> (
 					<Accordion.Item key={d.garage_id} value={d.garage_id.toString()} >

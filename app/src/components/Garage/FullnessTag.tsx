@@ -16,7 +16,7 @@ export default function FullnessTag(props: FullnessTagProps) {
 		colorPalette = "red";
 	}
 	return (
-		<Tag.Root colorPalette={colorPalette}>
+		<Tag.Root size="lg" colorPalette={colorPalette}>
 			<Tag.Label> 
 				{props.fullness}%
 			</Tag.Label>
