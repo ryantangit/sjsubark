@@ -1,7 +1,7 @@
 export default function AsciiArt() {
 
 	const art = `
-		  WOOF WOOF PARKING FULL?
+		  Bark Bark PARKING FULL?
         	\\ 
 			/ \\ / \\_       _________
      _____  (  @  #\\___    \\\\_______\\\\
