@@ -37,7 +37,6 @@ export default async function Home() {
 					<Accordion.Item key={d.garage_id} value={d.garage_id.toString()} paddingY={"1"}>
 					<Accordion.ItemTrigger>
 						<GarageTitle name={d.name} fullness={d.fullness} />
-						<Accordion.ItemIndicator/>
 					</Accordion.ItemTrigger>
 					<Accordion.ItemContent>
 						<GaragePredictions key={d.garage_id} predictions={fetchFuturePredictions(d)}/>	
