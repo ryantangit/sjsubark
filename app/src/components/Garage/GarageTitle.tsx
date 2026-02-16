@@ -9,10 +9,10 @@ interface GarageProps {
 
 export default function GarageTitle(props: GarageProps) {
 	return (
-		<HStack width={"320px"} flex={1} justifyContent={"space-between"}>
+		<HStack width={"320px"} flex={1} justifyContent={"space-between"} alignItems={"stretch"}>
 			<Heading> {props.name} </Heading>	
-			<Box width={"20"}>
-			<FullnessTag fullness={props.fullness} />
+			<Box display={"flex"} justifyItems="stretch" width={"20"}>
+				<FullnessTag fullness={props.fullness} />
 			</Box>
 		</HStack>
 	)
