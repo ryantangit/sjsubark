@@ -16,7 +16,7 @@ export default function FullnessTag(props: FullnessTagProps) {
 		colorPalette = "red";
 	}
 	return (
-		<Tag.Root size="lg" colorPalette={colorPalette}>
+		<Tag.Root colorPalette={colorPalette} width={"100%"} justifyContent={"space-evenly"}>
 			<Tag.Label> 
 				{props.fullness}%
 			</Tag.Label>

@@ -34,7 +34,9 @@ function GaragePrediction(props: GaragePredictionProps){
 		<DataList.Root>
 		<DataList.Item >
 		  <DataList.ItemLabel opacity={0.6}>{incrementToHourString(prediction.increments)}</DataList.ItemLabel>
-		  <DataList.ItemValue><FullnessTag fullness={prediction.forecast}></FullnessTag></DataList.ItemValue>
+		  <DataList.ItemValue>
+		  	<FullnessTag fullness={prediction.forecast}></FullnessTag>
+		  </DataList.ItemValue>
 		</DataList.Item>
 		</DataList.Root>
 	)
