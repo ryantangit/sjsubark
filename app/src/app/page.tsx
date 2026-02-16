@@ -28,10 +28,10 @@ export default async function Home() {
 		<AsciiArt />
 		</Box>
 		<Accordion.Root multiple collapsible defaultValue={data.map(d=>(d.garage_id.toString()))} marginX={"auto"} marginY={"auto"} padding={5} size={"lg"}>
-			<HStack borderBottom={"1px dashed"} borderColor={"blackAlpha.700"} alignItems={"end"} justifyContent={"space-between"} marginX={"auto"} marginBottom={"20px"}>
-			<Text fontSize={"sm"} alignItems={"left"}> Updated: {timestamp.toString()} </Text>
+			<Stack alignItems={"start"} marginX={"auto"} marginBottom={"20px"}>
 			<RefeshButton />
-			</HStack>
+			<Text fontSize={"sm"} alignItems={"left"}> Updated: {timestamp.toString()} </Text>
+			</Stack>
 			{
 				data.map((d)=> (
 					<Accordion.Item key={d.garage_id} value={d.garage_id.toString()} paddingY={"1"}>
